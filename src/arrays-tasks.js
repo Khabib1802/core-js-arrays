@@ -274,8 +274,14 @@ function distinct(arr) {
  *    createNDimensionalArray(4, 2) => [[[[0, 0], [0, 0]], [[0, 0], [0, 0]]], [[[0, 0], [0, 0]], [[0, 0], [0, 0]]]]
  *    createNDimensionalArray(1, 1) => [0]
  */
-function createNDimensionalArray(/* n, size */) {
-  throw new Error('Not implemented');
+function createNDimensionalArray(n, size) {
+  const dimensionalArray = new Array(size);
+  if (n > 1) {
+    dimensionalArray.fill(createNDimensionalArray(n - 1, size));
+  } else {
+    dimensionalArray.fill(0);
+  }
+  return dimensionalArray;
 }
 
 /**
@@ -289,8 +295,8 @@ function createNDimensionalArray(/* n, size */) {
  *    flattenArray(['a', ['b', ['c', 'd'], 'e'], 'f']) => ['a', 'b', 'c', 'd', 'e', 'f']
  *    flattenArray([1, 2, 3, 4]) => [1, 2, 3, 4]
  */
-function flattenArray(/* nestedArray */) {
-  throw new Error('Not implemented');
+function flattenArray(nestedArray) {
+  return nestedArray.flat(Infinity);
 }
 
 /**
@@ -306,8 +312,8 @@ function flattenArray(/* nestedArray */) {
  *   selectMany([[1, 2], [3, 4], [5, 6]], (x) => x) =>   [ 1, 2, 3, 4, 5, 6 ]
  *   selectMany(['one','two','three'], (x) => x.split('')) =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.flatMap(childrenSelector);
 }
 
 /**
@@ -323,8 +329,10 @@ function selectMany(/* arr, childrenSelector */) {
  *   calculateBalance([ [ 10, 8 ], [ 1, 5 ] ])  => (10 - 8) + (1 - 5) = 2 + -4 = -2
  *   calculateBalance([]) => 0
  */
-function calculateBalance(/* arr */) {
-  throw new Error('Not implemented');
+function calculateBalance(arr) {
+  return arr
+    .map(([income, expense]) => income - expense)
+    .reduce((sumBalance, monthBalance) => sumBalance + monthBalance, 0);
 }
 
 /**
@@ -339,8 +347,25 @@ function calculateBalance(/* arr */) {
  *    createChunks(['a', 'b', 'c', 'd', 'e'], 2) => [['a', 'b'], ['c', 'd'], ['e']]
  *    createChunks([10, 20, 30, 40, 50], 1) => [[10], [20], [30], [40], [50]]
  */
-function createChunks(/* arr, chunkSize */) {
-  throw new Error('Not implemented');
+function createChunks(arr, chunkSize) {
+  if (chunkSize === 1) {
+    return arr.map((element) => [element]);
+  }
+  const chunk = [];
+  return arr.reduce((acc, element, index, array) => {
+    const chunksArray = acc;
+    chunk.push(element);
+
+    if (
+      ((index + 1) % chunkSize === 0 && index !== 0) ||
+      index === array.length - 1
+    ) {
+      chunksArray.push([...chunk]);
+      chunk.length = 0;
+    }
+
+    return chunksArray;
+  }, []);
 }
 
 /**
