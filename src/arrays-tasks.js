@@ -380,8 +380,8 @@ function createChunks(arr, chunkSize) {
  *    generateOdds(2) => [ 1, 3 ]
  *    generateOdds(5) => [ 1, 3, 5, 7, 9 ]
  */
-function generateOdds(/* len */) {
-  throw new Error('Not implemented');
+function generateOdds(len) {
+  return new Array(len).fill(1).map((_, index) => (index + 1) * 2 - 1);
 }
 
 /**
@@ -396,8 +396,12 @@ function generateOdds(/* len */) {
  *   getElementByIndices(['one','two','three'], [2]) => 'three'  (arr[2])
  *   getElementByIndices([[[ 1, 2, 3]]], [ 0, 0, 1 ]) => 2        (arr[0][0][1])
  */
-function getElementByIndices(/* arr, indices */) {
-  throw new Error('Not implemented');
+function getElementByIndices(arr, indices) {
+  const zeroIndexedElement = arr[indices[0]];
+  if (Array.isArray(zeroIndexedElement)) {
+    return getElementByIndices(zeroIndexedElement, indices.slice(1));
+  }
+  return zeroIndexedElement;
 }
 
 /**
